@@ -13,7 +13,6 @@
     <div class="conteneur entete-contenu">
         <a href="index.php?page=accueil" class="logo">Cabinet Dr. Dupont</a>
 
-        <!-- Menu accessible sans JavaScript (case a cocher) -->
         <input type="checkbox" id="menu-toggle" class="menu-toggle">
         <label for="menu-toggle" class="menu-bouton" aria-label="Ouvrir le menu">&#9776;</label>
 
@@ -23,6 +22,15 @@
             <a href="index.php?page=actualites">Actualites</a>
             <a href="index.php?page=apropos">A propos</a>
             <a href="index.php?page=rendezvous" class="bouton-nav">Prendre rendez-vous</a>
+
+            <?php if (Auth::patientConnecte()): ?>
+                <!-- Patient connecte -->
+                <span class="nav-salut">Bonjour <?= htmlspecialchars($_SESSION['patient_nom']) ?></span>
+                <a href="index.php?page=deconnexion">Deconnexion</a>
+            <?php else: ?>
+                <!-- Visiteur -->
+                <a href="index.php?page=connexion">Connexion</a>
+            <?php endif; ?>
         </nav>
     </div>
 </header>

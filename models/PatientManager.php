@@ -115,4 +115,56 @@ class PatientManager extends Manager
 
         return $patient;
     }
+   /* ============================================================
+      A COLLER dans models/PatientManager.php, AVANT la derniere
+      accolade } qui ferme la classe.
+      Ces deux methodes gerent l'inscription et la connexion patient.
+      ============================================================ */
+
+    /**
+     * Inscrit un patient AVEC un mot de passe (compte en ligne).
+     * Le mot de passe est hache avant d'etre stocke.
+     */
+    public function inscrire(Patient $patient, string $motDePasseEnClair): bool
+    {
+        $hash = password_hash($motDePasseEnClair, PASSWORD_DEFAULT);
+
+        $sql = "INSERT INTO patients (nom, prenom, email, mot_de_passe, telephone, date_naissance)
+                VALUES (:nom, :prenom, :email, :mot_de_passe, :telephone, :date_naissance)";
+
+        $requete = $this->pdo->prepare($sql);
+
+        $ok = $requete->execute([
+            ':nom'            => $patient->getNom(),
+            ':prenom'         => $patient->getPrenom(),
+            ':email'          => $patient->getEmail(),
+            ':mot_de_passe'   => $hash,
+            ':telephone'      => $patient->getTelephone(),
+            ':date_naissance' => $patient->getDateNaissance()
+        ]);
+
+        if ($ok) {
+            $patient->setId((int) $this->pdo->lastInsertId());
+        }
+
+        return $ok;
+    }
+
+    /**
+     * Recupere le hash du mot de passe d'un patient par email.
+     * Retourne null si le patient n'existe pas ou n'a pas de compte.
+     */
+    public function getHashParEmail(string $email): ?string
+    {
+        $requete = $this->pdo->prepare(
+            "SELECT mot_de_passe FROM patients WHERE email = :email"
+        );
+        $requete->execute([':email' => $email]);
+
+        $ligne = $requete->fetch();
+
+        return ($ligne && $ligne['mot_de_passe']) ? $ligne['mot_de_passe'] : null;
+    }
+    
 }
+

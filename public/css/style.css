@@ -275,3 +275,30 @@ h3 { color: var(--bleu-fonce); font-size: 1.05rem; margin-bottom: 8px; }
     .banniere { grid-template-columns: 1.1fr 1fr; align-items: center; }
     .banniere-image { min-height: 260px; }
 }
+/* ============================================================
+   A COLLER a la fin de public/css/style.css
+   Styles des messages d'authentification.
+   ============================================================ */
+
+.message {
+    padding: 14px 18px;
+    border-radius: var(--rayon);
+    margin-bottom: 22px;
+    max-width: 720px;
+}
+
+.message ul { margin: 0; padding-left: 20px; }
+
+.message-erreur {
+    background: #fdecec;
+    color: #a12622;
+    border: 1px solid #f5c2c0;
+}
+
+.message-succes {
+    background: #e8f6ef;
+    color: #1d6a4f;
+    border: 1px solid #b7e0cd;
+}
+
+.message a { color: inherit; font-weight: 600; }
