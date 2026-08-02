@@ -1,125 +1,90 @@
 <?php
 /**
- * Classe Patient (Modele)
- * Gere toutes les operations sur la table "patients".
- * A placer dans : models/Patient.php
+ * Entite Patient
+ * Represente UN patient. Ne contient aucune requete SQL :
+ * c'est PatientManager qui s'en charge.
+ * Fichier : models/Patient.php
  */
-
-require_once __DIR__ . '/../config/Database.php';
-
-class Patient
+class Patient extends Entity
 {
-    // Les donnees d'un patient (encapsulees)
-    private ?int $id = null;
-    private string $nom = '';
-    private string $prenom = '';
-    private string $email = '';
-    private ?string $telephone = null;
+    private ?int    $id            = null;
+    private string  $nom           = '';
+    private string  $prenom        = '';
+    private string  $email         = '';
+    private ?string $telephone     = null;
     private ?string $dateNaissance = null;
 
-    // La connexion a la base, partagee par toutes les methodes
-    private PDO $pdo;
+    // ---------------- GETTERS ----------------
+    public function getId(): ?int             { return $this->id; }
+    public function getNom(): string          { return $this->nom; }
+    public function getPrenom(): string       { return $this->prenom; }
+    public function getEmail(): string        { return $this->email; }
+    public function getTelephone(): ?string   { return $this->telephone; }
+    public function getDateNaissance(): ?string { return $this->dateNaissance; }
 
-    public function __construct()
+    // ---------------- SETTERS ----------------
+    // Les setters sont la porte d'entree : on en profite pour VALIDER.
+
+    public function setId(int|string $id): void
     {
-        $database = new Database();
-        $this->pdo = $database->getConnexion();
+        $this->id = (int) $id;
     }
 
-    // ------------------------------------------------------------
-    // GETTERS et SETTERS : la porte d'entree vers les attributs prives
-    // ------------------------------------------------------------
-    public function getId(): ?int          { return $this->id; }
-    public function getNom(): string       { return $this->nom; }
-    public function getPrenom(): string    { return $this->prenom; }
-    public function getEmail(): string     { return $this->email; }
-
-    public function setNom(string $nom): void                { $this->nom = $nom; }
-    public function setPrenom(string $prenom): void          { $this->prenom = $prenom; }
-    public function setEmail(string $email): void            { $this->email = $email; }
-    public function setTelephone(?string $tel): void         { $this->telephone = $tel; }
-    public function setDateNaissance(?string $date): void    { $this->dateNaissance = $date; }
-
-    // ------------------------------------------------------------
-    // LISTER tous les patients
-    // ------------------------------------------------------------
-    public function lister(): array
+    public function setNom(string $nom): void
     {
-        $sql = "SELECT * FROM patients ORDER BY nom, prenom";
-        $requete = $this->pdo->query($sql);
-
-        return $requete->fetchAll();
+        $nom = trim($nom);
+        if ($nom === '') {
+            throw new InvalidArgumentException('Le nom ne peut pas etre vide.');
+        }
+        $this->nom = $nom;
     }
 
-    // ------------------------------------------------------------
-    // TROUVER un patient par son id
-    // ------------------------------------------------------------
-    public function trouverParId(int $id): ?array
+    public function setPrenom(string $prenom): void
     {
-        $sql = "SELECT * FROM patients WHERE id = :id";
-        $requete = $this->pdo->prepare($sql);
-        $requete->execute([':id' => $id]);
-
-        $resultat = $requete->fetch();
-
-        return $resultat ?: null;
+        $prenom = trim($prenom);
+        if ($prenom === '') {
+            throw new InvalidArgumentException('Le prenom ne peut pas etre vide.');
+        }
+        $this->prenom = $prenom;
     }
 
-    // ------------------------------------------------------------
-    // AJOUTER un patient
-    // ------------------------------------------------------------
-    public function ajouter(): bool
+    public function setEmail(string $email): void
     {
-        $sql = "INSERT INTO patients (nom, prenom, email, telephone, date_naissance)
-                VALUES (:nom, :prenom, :email, :telephone, :date_naissance)";
+        $email = trim($email);
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            throw new InvalidArgumentException('Adresse email invalide : ' . $email);
+        }
+        $this->email = $email;
+    }
 
-        $requete = $this->pdo->prepare($sql);
+    public function setTelephone(?string $telephone): void
+    {
+        $this->telephone = ($telephone === null || trim($telephone) === '')
+            ? null
+            : trim($telephone);
+    }
 
-        $ok = $requete->execute([
-            ':nom'            => $this->nom,
-            ':prenom'         => $this->prenom,
-            ':email'          => $this->email,
-            ':telephone'      => $this->telephone,
-            ':date_naissance' => $this->dateNaissance
-        ]);
+    public function setDateNaissance(?string $date): void
+    {
+        $this->dateNaissance = ($date === null || $date === '') ? null : $date;
+    }
 
-        if ($ok) {
-            $this->id = (int) $this->pdo->lastInsertId();
+    // ---------------- METHODES METIER ----------------
+    // Voila tout l'interet de l'objet : il sait faire des choses,
+    // contrairement a un simple tableau.
+
+    public function getNomComplet(): string
+    {
+        return $this->prenom . ' ' . strtoupper($this->nom);
+    }
+
+    public function getAge(): ?int
+    {
+        if ($this->dateNaissance === null) {
+            return null;
         }
 
-        return $ok;
-    }
-
-    // ------------------------------------------------------------
-    // MODIFIER un patient existant
-    // ------------------------------------------------------------
-    public function modifier(int $id): bool
-    {
-        $sql = "UPDATE patients
-                SET nom = :nom, prenom = :prenom, email = :email,
-                    telephone = :telephone, date_naissance = :date_naissance
-                WHERE id = :id";
-
-        $requete = $this->pdo->prepare($sql);
-
-        return $requete->execute([
-            ':nom'            => $this->nom,
-            ':prenom'         => $this->prenom,
-            ':email'          => $this->email,
-            ':telephone'      => $this->telephone,
-            ':date_naissance' => $this->dateNaissance,
-            ':id'             => $id
-        ]);
-    }
-
-    // ------------------------------------------------------------
-    // SUPPRIMER un patient
-    // ------------------------------------------------------------
-    public function supprimer(int $id): bool
-    {
-        $sql = "DELETE FROM patients WHERE id = :id";
-        $requete = $this->pdo->prepare($sql);
-
-        return $requete->execute([':id' => $id]);
+        $naissance = new DateTime($this->dateNaissance);
+        return $naissance->diff(new DateTime())->y;
     }
 }

@@ -1,0 +1,277 @@
+/* ============================================================
+   Cabinet dentaire Dr. Dupont - Feuille de style
+   Approche mobile first : les styles de base valent pour mobile,
+   les media queries adaptent ensuite aux ecrans plus larges.
+   ============================================================ */
+
+:root {
+    --bleu:        #2e5c8a;
+    --bleu-fonce:  #1f4165;
+    --vert:        #2e8b6f;
+    --gris-clair:  #f4f6f9;
+    --gris-texte:  #444;
+    --blanc:       #fff;
+    --rayon:       10px;
+    --ombre:       0 2px 10px rgba(0, 0, 0, .07);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+    font-family: system-ui, -apple-system, "Segoe UI", Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--gris-texte);
+    background: var(--gris-clair);
+}
+
+.conteneur {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Texte reserve aux lecteurs d'ecran (accessibilite) */
+.sr-only {
+    position: absolute;
+    width: 1px; height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+/* ---------------- EN-TETE ET NAVIGATION ---------------- */
+.entete {
+    background: var(--blanc);
+    box-shadow: var(--ombre);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.entete-contenu {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 14px;
+    padding-bottom: 14px;
+}
+
+.logo {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--bleu);
+    text-decoration: none;
+}
+
+/* Menu burger sans JavaScript */
+.menu-toggle { display: none; }
+
+.menu-bouton {
+    font-size: 1.6rem;
+    color: var(--bleu);
+    cursor: pointer;
+    line-height: 1;
+}
+
+.navigation {
+    display: none;
+    width: 100%;
+    flex-direction: column;
+    gap: 4px;
+    padding-top: 12px;
+}
+
+.menu-toggle:checked ~ .navigation { display: flex; }
+
+.navigation a {
+    color: var(--gris-texte);
+    text-decoration: none;
+    padding: 10px 4px;
+    border-radius: 6px;
+}
+
+.navigation a:hover,
+.navigation a:focus { color: var(--bleu); background: var(--gris-clair); }
+
+.bouton-nav {
+    background: var(--bleu);
+    color: var(--blanc) !important;
+    text-align: center;
+    font-weight: 600;
+}
+
+.bouton-nav:hover { background: var(--bleu-fonce) !important; }
+
+/* ---------------- CONTENU ---------------- */
+main { padding: 32px 20px 48px; }
+
+h1 { color: var(--bleu); font-size: 1.7rem; margin-bottom: 12px; }
+h2 { color: var(--bleu); font-size: 1.3rem; margin-bottom: 14px; }
+h3 { color: var(--bleu-fonce); font-size: 1.05rem; margin-bottom: 8px; }
+
+.intro { margin-bottom: 26px; max-width: 60ch; }
+.section { margin-bottom: 44px; }
+
+/* ---------------- BANNIERE D'ACCUEIL ---------------- */
+.banniere {
+    display: grid;
+    gap: 22px;
+    margin-bottom: 46px;
+}
+
+.banniere-texte h1 { margin-bottom: 14px; }
+.banniere-texte p  { margin-bottom: 22px; max-width: 55ch; }
+
+.banniere-image {
+    background: linear-gradient(135deg, var(--bleu), var(--vert));
+    border-radius: var(--rayon);
+    min-height: 190px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--blanc);
+    font-weight: 600;
+    letter-spacing: .5px;
+}
+
+/* ---------------- BOUTONS ---------------- */
+.bouton-cta, .bouton-secondaire {
+    display: inline-block;
+    padding: 13px 26px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.bouton-cta { background: var(--vert); color: var(--blanc); }
+.bouton-cta:hover { background: #24705a; }
+
+.bouton-secondaire {
+    background: transparent;
+    color: var(--bleu);
+    border: 2px solid var(--bleu);
+    padding: 9px 18px;
+    font-size: .92rem;
+}
+
+.bouton-secondaire:hover { background: var(--bleu); color: var(--blanc); }
+
+/* ---------------- GRILLE DE CARTES ---------------- */
+.grille {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 20px;
+}
+
+.carte {
+    background: var(--blanc);
+    border-radius: var(--rayon);
+    padding: 22px;
+    box-shadow: var(--ombre);
+}
+
+.carte p { margin-bottom: 10px; }
+
+.meta { font-size: .88rem; color: #777; }
+
+/* ---------------- TABLEAU DES HORAIRES ---------------- */
+.tableau {
+    width: 100%;
+    max-width: 480px;
+    background: var(--blanc);
+    border-radius: var(--rayon);
+    border-collapse: collapse;
+    overflow: hidden;
+    box-shadow: var(--ombre);
+}
+
+.tableau th, .tableau td {
+    padding: 11px 16px;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+}
+
+.tableau th { font-weight: 600; color: var(--bleu-fonce); }
+.ferme { color: #b23; font-style: italic; }
+
+/* ---------------- FORMULAIRE ---------------- */
+.formulaire {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+    background: var(--blanc);
+    padding: 26px;
+    border-radius: var(--rayon);
+    box-shadow: var(--ombre);
+    max-width: 720px;
+}
+
+.champ { display: flex; flex-direction: column; }
+
+.champ label { font-weight: 600; margin-bottom: 6px; font-size: .93rem; }
+
+.champ input, .champ select, .champ textarea {
+    padding: 11px;
+    border: 2px solid #e2e6eb;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-family: inherit;
+}
+
+.champ input:focus, .champ select:focus, .champ textarea:focus {
+    outline: none;
+    border-color: var(--bleu);
+}
+
+.note { margin-top: 16px; font-size: .88rem; color: #777; }
+
+/* ---------------- PIED DE PAGE ---------------- */
+.pied-de-page {
+    background: var(--bleu-fonce);
+    color: #d8e3ee;
+    padding: 26px 0;
+    text-align: center;
+    font-size: .92rem;
+}
+
+.pied-de-page .mentions { margin-top: 10px; color: #9fb6cd; font-size: .85rem; }
+
+/* ============================================================
+   TABLETTE
+   ============================================================ */
+@media (min-width: 700px) {
+    .grille { grid-template-columns: repeat(2, 1fr); }
+
+    .formulaire { grid-template-columns: repeat(2, 1fr); }
+    .champ-large, .formulaire button { grid-column: 1 / -1; }
+
+    h1 { font-size: 2rem; }
+}
+
+/* ============================================================
+   ORDINATEUR
+   ============================================================ */
+@media (min-width: 950px) {
+    .menu-bouton { display: none; }
+
+    .navigation {
+        display: flex;
+        flex-direction: row;
+        width: auto;
+        gap: 6px;
+        padding-top: 0;
+        align-items: center;
+    }
+
+    .navigation a { padding: 9px 14px; }
+
+    .grille { grid-template-columns: repeat(3, 1fr); }
+
+    .banniere { grid-template-columns: 1.1fr 1fr; align-items: center; }
+    .banniere-image { min-height: 260px; }
+}

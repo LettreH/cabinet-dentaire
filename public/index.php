@@ -1,60 +1,50 @@
 <?php
 /**
- * Point d'entree du site - test de la POO
- * A placer dans : public/index.php
+ * Point d'entree unique du site (front controller).
+ * Fichier : public/index.php
  */
 
-require_once __DIR__ . '/../models/Patient.php';
+/* ------------------------------------------------------------
+   AUTOLOAD
+   Plus besoin d'ecrire un require_once par classe :
+   PHP appelle cette fonction des qu'une classe inconnue est
+   utilisee, et va chercher le fichier correspondant.
 
-// On cree un OBJET a partir de la CLASSE Patient
-$patient = new Patient();
+   new PatientManager()  ->  models/PatientManager.php
+   ------------------------------------------------------------ */
+spl_autoload_register(function (string $nomClasse): void {
 
-// On appelle une METHODE de cet objet
-$listePatients = $patient->lister();
-?>
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Test POO - Cabinet dentaire</title>
-    <style>
-        body   { font-family: Arial, sans-serif; margin: 40px; background: #f0f2f5; }
-        h1     { color: #2E5C8A; }
-        .ok    { background: #d4edda; color: #155724; padding: 12px 16px;
-                 border-radius: 8px; display: inline-block; }
-        table  { border-collapse: collapse; margin-top: 24px; background: #fff;
-                 box-shadow: 0 2px 6px rgba(0,0,0,.08); }
-        th, td { padding: 10px 16px; border-bottom: 1px solid #eee; text-align: left; }
-        th     { background: #2E5C8A; color: #fff; }
-    </style>
-</head>
-<body>
+    $dossiers = [
+        __DIR__ . '/../config/',
+        __DIR__ . '/../core/',
+        __DIR__ . '/../models/',
+        __DIR__ . '/../controllers/',
+    ];
 
-    <h1>Cabinet dentaire Dr. Dupont</h1>
+    foreach ($dossiers as $dossier) {
+        $fichier = $dossier . $nomClasse . '.php';
 
-    <p class="ok">Connexion a la base de donnees reussie !</p>
+        if (file_exists($fichier)) {
+            require_once $fichier;
+            return;
+        }
+    }
+});
 
-    <h2>Liste des patients (<?= count($listePatients) ?>)</h2>
 
-    <table>
-        <tr>
-            <th>ID</th>
-            <th>Nom</th>
-            <th>Prenom</th>
-            <th>Email</th>
-            <th>Telephone</th>
-        </tr>
-        <?php foreach ($listePatients as $p): ?>
-        <tr>
-            <td><?= htmlspecialchars($p['id']) ?></td>
-            <td><?= htmlspecialchars($p['nom']) ?></td>
-            <td><?= htmlspecialchars($p['prenom']) ?></td>
-            <td><?= htmlspecialchars($p['email']) ?></td>
-            <td><?= htmlspecialchars($p['telephone'] ?? '-') ?></td>
-        </tr>
-        <?php endforeach; ?>
-    </table>
+/* ------------------------------------------------------------
+   ROUTAGE
+   ------------------------------------------------------------ */
+$router = new Router();
 
-</body>
-</html>
+$router->ajouter('accueil',    'PageController', 'accueil');
+$router->ajouter('services',   'PageController', 'services');
+$router->ajouter('actualites', 'PageController', 'actualites');
+$router->ajouter('apropos',    'PageController', 'apropos');
+$router->ajouter('rendezvous', 'PageController', 'rendezvous');
+$router->ajouter('erreur404',  'PageController', 'erreur404');
+
+// Page demandee dans l'URL (?page=services), accueil par defaut
+$page = $_GET['page'] ?? 'accueil';
+
+$router->router($page);
