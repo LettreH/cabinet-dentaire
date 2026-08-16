@@ -1,7 +1,6 @@
 <?php
 /**
  * Point d'entree unique du site (front controller).
- * Version Sequence 6 : sessions + routes d'authentification.
  * Fichier : public/index.php
  */
 
@@ -23,7 +22,6 @@ spl_autoload_register(function (string $nomClasse): void {
 });
 
 /* ---------- SESSION ---------- */
-// On demarre la session AVANT tout affichage.
 Auth::demarrer();
 
 /* ---------- ROUTAGE ---------- */
@@ -37,9 +35,8 @@ $router->ajouter('apropos',    'PageController', 'apropos');
 $router->ajouter('rendezvous', 'PageController', 'rendezvous');
 $router->ajouter('erreur404',  'PageController', 'erreur404');
 
-// Authentification
-$router->ajouter('inscription',     'AuthController', 'inscription');
-$router->ajouter('connexion',       'AuthController', 'connexionPatient');
+// Authentification : SEULEMENT le back office (equipe).
+// Les patients n'ont pas de compte : ils prennent RDV via le formulaire public.
 $router->ajouter('admin_connexion', 'AuthController', 'connexionAdmin');
 $router->ajouter('deconnexion',     'AuthController', 'deconnexion');
 
