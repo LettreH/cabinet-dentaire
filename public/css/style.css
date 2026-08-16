@@ -302,3 +302,145 @@ h3 { color: var(--bleu-fonce); font-size: 1.05rem; margin-bottom: 8px; }
 }
 
 .message a { color: inherit; font-weight: 600; }
+
+/* ============================================================
+   A COLLER a la fin de public/css/style.css
+   Styles specifiques au back office.
+   ============================================================ */
+
+/* Disposition : menu lateral + contenu */
+.menu-admin {
+    background: var(--bleu-fonce);
+    border-radius: var(--rayon);
+    padding: 18px;
+    margin-bottom: 24px;
+}
+
+.menu-admin-titre {
+    color: #9fb6cd;
+    text-transform: uppercase;
+    font-size: .75rem;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+}
+
+.menu-admin nav { display: flex; flex-direction: column; gap: 4px; }
+
+.menu-admin a {
+    color: #d8e3ee;
+    text-decoration: none;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-size: .95rem;
+}
+
+.menu-admin a:hover { background: rgba(255,255,255,.1); color: #fff; }
+
+.menu-admin-quitter {
+    margin-top: 8px;
+    border-top: 1px solid rgba(255,255,255,.15);
+    padding-top: 12px !important;
+    color: #f3b0a8 !important;
+}
+
+.contenu-admin { min-height: 300px; }
+
+/* En-tete d'une section (titre + bouton ajouter) */
+.entete-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+}
+
+.entete-section h1 { margin-bottom: 0; }
+
+/* Cartes de statistiques (tableau de bord) */
+.grille-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 16px;
+}
+
+.carte-stat {
+    background: var(--blanc);
+    border-radius: var(--rayon);
+    padding: 22px;
+    box-shadow: var(--ombre);
+    text-align: center;
+}
+
+.carte-stat .chiffre {
+    display: block;
+    font-size: 2.4rem;
+    font-weight: 700;
+    color: var(--bleu);
+}
+
+.carte-stat .libelle { color: #777; font-size: .9rem; }
+
+/* Tableau d'administration */
+.tableau-admin {
+    width: 100%;
+    background: var(--blanc);
+    border-radius: var(--rayon);
+    border-collapse: collapse;
+    overflow: hidden;
+    box-shadow: var(--ombre);
+}
+
+.tableau-admin th, .tableau-admin td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid #eef1f4;
+    font-size: .92rem;
+}
+
+.tableau-admin th { background: var(--bleu); color: #fff; font-weight: 600; }
+.tableau-admin tr:last-child td { border-bottom: none; }
+
+.actions { display: flex; flex-wrap: wrap; gap: 6px; }
+
+/* Petits boutons d'action */
+.mini-bouton {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: .82rem;
+    text-decoration: none;
+    color: #fff;
+    font-weight: 600;
+}
+
+.mini-bouton.vert   { background: #2e8b6f; }
+.mini-bouton.bleu   { background: #2e5c8a; }
+.mini-bouton.orange { background: #d98324; }
+.mini-bouton.rouge  { background: #c0392b; }
+.mini-bouton:hover  { opacity: .85; }
+
+/* Badges de statut */
+.badge-statut {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: .8rem;
+    font-weight: 600;
+}
+
+.statut-confirme { background: #d4f0e5; color: #1d6a4f; }
+.statut-annule   { background: #fde0dd; color: #a12622; }
+.statut-attente  { background: #fdefd6; color: #92600f; }
+
+/* A partir de la tablette : menu lateral a gauche du contenu */
+@media (min-width: 850px) {
+    main:has(.menu-admin) {
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        gap: 28px;
+        align-items: start;
+    }
+    .menu-admin { margin-bottom: 0; position: sticky; top: 90px; }
+    .grille-stats { grid-template-columns: repeat(4, 1fr); }
+}
