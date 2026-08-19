@@ -444,3 +444,29 @@ h3 { color: var(--bleu-fonce); font-size: 1.05rem; margin-bottom: 8px; }
     .menu-admin { margin-bottom: 0; position: sticky; top: 90px; }
     .grille-stats { grid-template-columns: repeat(4, 1fr); }
 }
+/* ============================================================
+   A COLLER a la fin de public/css/style.css
+   Styles de la page de detail d'un article.
+   ============================================================ */
+
+.article-detail {
+    background: var(--blanc);
+    border-radius: var(--rayon);
+    padding: 28px;
+    box-shadow: var(--ombre);
+    max-width: 760px;
+}
+
+.article-detail .meta { margin-bottom: 20px; }
+
+.article-image {
+    width: 100%;
+    height: auto;
+    border-radius: var(--rayon);
+    margin-bottom: 22px;
+}
+
+.article-contenu {
+    line-height: 1.75;
+    margin-bottom: 28px;
+}

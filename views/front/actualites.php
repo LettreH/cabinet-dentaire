@@ -1,4 +1,4 @@
-<!-- Vue : actualites sante -->
+<!-- Vue : liste des actualites sante -->
 
 <h1>Actualites</h1>
 <p class="intro">Retrouvez les informations et conseils publies par notre equipe.</p>
@@ -16,7 +16,12 @@
                         par <?= htmlspecialchars($actualite->getAuteur()) ?>
                     <?php endif; ?>
                 </p>
-                <p><?= nl2br(htmlspecialchars($actualite->getContenu())) ?></p>
+
+                <!-- On affiche seulement un extrait -->
+                <p><?= htmlspecialchars($actualite->getExtrait()) ?></p>
+
+                <a href="index.php?page=actualite&id=<?= (int) $actualite->getId() ?>"
+                   class="bouton-secondaire">Lire l'article</a>
             </article>
         <?php endforeach; ?>
     </div>

@@ -31,6 +31,7 @@ $router = new Router();
 $router->ajouter('accueil',    'PageController', 'accueil');
 $router->ajouter('services',   'PageController', 'services');
 $router->ajouter('actualites', 'PageController', 'actualites');
+$router->ajouter('actualite',  'PageController', 'actualiteDetail');   // ?page=actualite&id=3
 $router->ajouter('apropos',    'PageController', 'apropos');
 $router->ajouter('rendezvous', 'PageController', 'rendezvous');
 $router->ajouter('erreur404',  'PageController', 'erreur404');
