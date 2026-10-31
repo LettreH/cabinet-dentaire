@@ -115,11 +115,11 @@ class PatientManager extends Manager
 
         return $patient;
     }
-   /* ============================================================
-      A COLLER dans models/PatientManager.php, AVANT la derniere
-      accolade } qui ferme la classe.
-      Ces deux methodes gerent l'inscription et la connexion patient.
-      ============================================================ */
+    /* ============================================================
+       INSCRIPTION ET CONNEXION DU PATIENT
+       Ces deux methodes gerent l'inscription et la connexion
+       d'un patient qui a un compte en ligne.
+       ============================================================ */
 
     /**
      * Inscrit un patient AVEC un mot de passe (compte en ligne).

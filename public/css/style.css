@@ -276,7 +276,7 @@ h3 { color: var(--bleu-fonce); font-size: 1.05rem; margin-bottom: 8px; }
     .banniere-image { min-height: 260px; }
 }
 /* ============================================================
-   A COLLER a la fin de public/css/style.css
+   AUTHENTIFICATION
    Styles des messages d'authentification.
    ============================================================ */
 
@@ -304,7 +304,7 @@ h3 { color: var(--bleu-fonce); font-size: 1.05rem; margin-bottom: 8px; }
 .message a { color: inherit; font-weight: 600; }
 
 /* ============================================================
-   A COLLER a la fin de public/css/style.css
+   BACK OFFICE
    Styles specifiques au back office.
    ============================================================ */
 
@@ -445,7 +445,7 @@ h3 { color: var(--bleu-fonce); font-size: 1.05rem; margin-bottom: 8px; }
     .grille-stats { grid-template-columns: repeat(4, 1fr); }
 }
 /* ============================================================
-   A COLLER a la fin de public/css/style.css
+   PAGE DETAIL D'UN ARTICLE
    Styles de la page de detail d'un article.
    ============================================================ */
 
